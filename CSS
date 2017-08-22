@@ -1,0 +1,47 @@
+body {
+  background: url(https://www.dropbox.com/s/25eor88m9khs9jw/clear.jpg?raw=1)
+  no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/*Icon*/
+.icons{
+  padding-top: 200px;
+  text-align: center;
+}
+
+/*Summary and Temp*/
+.tempData{
+  padding-top: 25px;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px #000000;
+  background-color: Transparent;
+  border: none;
+  outline: 0 !important;
+}
+
+/*Location*/
+.location{
+  padding-top: 25px;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px #000000;
+}
+
+/*tip*/
+.tip{
+  color: red;
+  padding-top: 50px;
+  text-align: center;
+}
+
+/*footer*/
+.footer {
+  color: white;
+  padding-top: 300px;
+  text-align: center;
+}

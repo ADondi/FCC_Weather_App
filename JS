@@ -1,0 +1,113 @@
+//document ready
+$(document).ready(function(){
+
+  if(navigator.geolocation){
+    //get coordiantes
+    navigator.geolocation.getCurrentPosition(function(position){
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+      //get weather by using Dark Sky API
+      var originURL = "https://cors-anywhere.herokuapp.com/"
+      var url = originURL +
+      "https://api.darksky.net/forecast/cd9e9ed074a54b0aca138610b64fe6e1/" +
+      lat + ',' + long;
+      var rawData = $.getJSON(url, function(data){
+        //prep html current weather and temp
+        var temp = ((data.currently.temperature-32)*5/9).toFixed(2);
+        var j = 'C';
+        //console.log(temp);
+
+        //create button event
+        $("#toogle").on("click", function(){
+          if (j === 'C'){
+            temp = (data.currently.temperature).toFixed(2);
+            j = 'F'
+            //console.log(j);
+            var currentData = "<h3>" + data.currently.summary + ", " + temp +
+            "F" + "<\h3>";
+            $(".tempData").html(currentData);
+          }else {
+            temp = ((data.currently.temperature-32)*5/9).toFixed(2);
+            j = 'C'
+            var currentData = "<h3>" + data.currently.summary + ", " + temp +
+            "C" + "<\h3>";
+            $(".tempData").html(currentData);
+          };
+        });//close onClick function
+
+        var currentData = "<h3>" + data.currently.summary + ", " + temp +
+        "C" + "<\h3>";
+        //assign html current data to div
+        $(".tempData").html(currentData);
+
+
+//ICON DICTIONARY
+/*
+var icons = new Skycons({"color": "orange"});
+
+icons.set("clear-day", Skycons.CLEAR_DAY);
+icons.set("clear-night", Skycons.CLEAR_NIGHT);
+icons.set("partly-cloudy-day", Skycons.PARTLY_CLOUDY_DAY);
+icons.set("partly-cloudy-night", Skycons.PARTLY_CLOUDY_NIGHT);
+icons.set("cloudy", Skycons.CLOUDY);
+icons.set("rain", Skycons.RAIN);
+icons.set("sleet", Skycons.SLEET);
+icons.set("snow", Skycons.SNOW);
+icons.set("wind", Skycons.WIND);
+icons.set("fog", Skycons.FOG);
+
+icons.play();
+*/
+
+        //chain multiple if-else if to change the background ( switch did not work)
+        //and also change the icon
+        var weather = data.currently.summary;
+        var icons = new Skycons({"color": "white"})
+        icons.play();
+        if (weather === "Light Rain" || weather === "Light Rain and Breezy" ||
+           weather === "Rain" || weather === "Drizzle" ||
+           weather === "Drizzle and Breezy"){
+          $('body').css('background-image',
+          'url(https://www.dropbox.com/s/npvqzvndzyz84h3/rain.jpg?raw=1)');
+          icons.set("icon1", Skycons.RAIN);
+        }else if (weather === "Snow"){
+          $('body').css('background-image',
+          'url(https://www.dropbox.com/s/vneu8e62drf6kpx/snow.jpg?raw=1)');
+          icons.set("icon1", Skycons.SNOW);
+        }else if (weather === "Partly Cloudy" || weather === "Partly Sunny"){
+          $('body').css('background-image',
+          'url(https://www.dropbox.com/s/qaj618agd8lnwmf/partly%20sunny.jpg?raw=1)');
+          icons.set("icon1", Skycons.PARTLY_CLOUDY_DAY);
+        }else if (weather === "Overcast" || weather === "Mostly Cloudy" ||
+                 weather === "Cloudy" || weather === "Breezy and Mostly Cloudy"){
+          $('body').css('background-image',
+          'url(https://www.dropbox.com/s/bftp7qe72mifbnf/cloudy.jpg?raw=1)');
+          icons.set("icon1", Skycons.CLOUDY);
+        }else if (weather === "Fog" || weather === "Foggy"){
+          $('body').css('background-image',
+          'url(https://www.dropbox.com/s/cjl79dvigzxl9dw/foggy.jpg?raw=1)');
+          icons.set("icon1", Skycons.FOG);
+        }else if (weather === "Clear"){
+          $('body').css('background-image',
+          'url(https://www.dropbox.com/s/25eor88m9khs9jw/clear.jpg?raw=1)')
+          icons.set("icon1", Skycons.CLEAR_DAY);
+        }
+
+        //use Google API to reverse geo-code (coords to address)
+        var geocoder = new google.maps.Geocoder;
+        var location  = new google.maps.LatLng(lat, long);
+        geocoder.geocode({'latLng': location}, function (results, status) {
+        if(status == google.maps.GeocoderStatus.OK) {
+          var add=results[0].formatted_address;
+          //prep html address
+          var htmlAdd = '<h5>' + add + '</h5>'
+          //assign html address to div
+          $(".location").html(htmlAdd);
+          }//close if
+          });//close geocoder
+
+        });
+      });
+    }
+
+});//clode document ready
